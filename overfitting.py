@@ -103,7 +103,7 @@ def plot_test_accuracy(test_accuracy, num_epochs, test_accuracy_xmin):
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax.plot(np.arange(test_accuracy_xmin, num_epochs), 
-            [accuracy/100.0 
+            [accuracy*100.0
              for accuracy in test_accuracy[test_accuracy_xmin:num_epochs]],
             color='#2A6EA6')
     ax.set_xlim([test_accuracy_xmin, num_epochs])
@@ -129,7 +129,7 @@ def plot_training_accuracy(training_accuracy, num_epochs,
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax.plot(np.arange(training_accuracy_xmin, num_epochs), 
-            [accuracy*100.0/training_set_size 
+            [accuracy*100.0
              for accuracy in training_accuracy[training_accuracy_xmin:num_epochs]],
             color='#2A6EA6')
     ax.set_xlim([training_accuracy_xmin, num_epochs])

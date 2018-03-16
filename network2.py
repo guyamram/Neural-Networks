@@ -24,7 +24,7 @@ import numpy as np
 import mnist_loader
 import load_matrices
 import NeuralNetwork as nn
-import overfitting_copy as ofit
+import overfitting as ofit
 #### Define the quadratic and cross-entropy cost functions
 
 class QuadraticCost(object):
@@ -101,7 +101,7 @@ class Network(object):
 
         """
         self.biases = [np.random.randn(y, 1) for y in self.sizes[1:]]
-        self.weights = [np.random.randn(y, x) / np.sqrt(x)
+        self.weights = [np.random.randn(y, x) #/ np.sqrt(x)
                         for x, y in zip(self.sizes[:-1], self.sizes[1:])]
 
     def large_weight_initializer(self):
@@ -291,8 +291,8 @@ class Network(object):
             # my_cost = nn.cross_entropy_cost_function(a,y)/len(data)
             if convert: y = vectorized_result(y)
             cost += self.cost.fn(a, y)/len(data)
-        # cost += 0.5*(lmbda/len(data))*sum(
-        #     np.linalg.norm(w)**2 for w in self.weights)
+        cost += 0.5*(lmbda/len(data))*sum(
+            np.linalg.norm(w)**2 for w in self.weights)
         return cost
 
     def save(self, filename):
@@ -340,13 +340,13 @@ def sigmoid_prime(z):
     return sigmoid(z)*(1-sigmoid(z))
 
 def main():
-    # random.seed(12345678)
-    # np.random.seed(12345678)
+    random.seed(12345678)
+    np.random.seed(12345678)
     training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
     start = time.time()
-    net = Network([784, 30, 10], cost=CrossEntropyCost)
+    net = Network([784, 100, 10], cost=CrossEntropyCost)
     # net.large_weight_initializer()
-    net.SGD(training_data[:1000], 400, 10, 0.5, evaluation_data=test_data,
+    net.SGD(training_data, 3, 10, 0.1,lmbda=5.0, evaluation_data=test_data,
             monitor_evaluation_accuracy=True,
             monitor_evaluation_cost=True,
             monitor_training_cost=True,
